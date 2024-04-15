@@ -9,8 +9,10 @@
   },
   "author": "",
   "license": "ISC",
-
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "nodeman": "^1.1.2"
+  }
 }
