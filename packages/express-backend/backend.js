@@ -37,16 +37,27 @@ const users = {
 app.use(express.json());
 
 const findUserByName = (name, job) => {
-    return users["users_list"].filter(
-      (user) => user["name"] === name && user["job"] === job
-    );
+    if (job !== undefined && name !== undefined){
+      return users["users_list"].filter(
+        (user) => user["name"] === name && user["job"] === job
+      );
+    }else if(job === undefined){
+      return users["users_list"].filter(
+        (user) => user["name"] === name
+      );
+    }
+    else{
+      return users["users_list"].filter(
+        (user) => user["job"] === job
+      );
+    }
   };  
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
   console.log(name, job)
-  if (name != undefined && job != undefined) {
+  if (name != undefined || job != undefined) {
     let result = findUserByName(name, job);
     result = { users_list: result };
     res.send(result);
