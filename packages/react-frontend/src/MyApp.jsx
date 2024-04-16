@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import Form from "./Form"
 
-const characters = [
+const initialcharacters = [
   {
     name: "Charlie",
     job: "Janitor"
@@ -33,7 +33,16 @@ function MyApp() {
   }
 
   function updateList(person){
-    setCharacters([...characters, person]);
+    postUser(person)
+      .then(() => setCharacters([...characters, person]))
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  function fetchUsers() {
+    const promise = fetch("http://localhost:8000/users");
+    return promise;
   }
 
   useEffect(() => {
@@ -43,8 +52,15 @@ function MyApp() {
       .catch((error) => { console.log(error); });
   }, [] );
 
-  function fetchUsers() {
-    const promise = fetch("http://localhost:8000/users");
+  function postUser(person) {
+    const promise = fetch("Http://localhost:8000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(person),
+    });
+
     return promise;
   }
 
