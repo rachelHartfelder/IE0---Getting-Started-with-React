@@ -56,7 +56,6 @@ const findUserByName = (name, job) => {
 app.get("/users", (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
-  console.log(name, job)
   if (name != undefined || job != undefined) {
     let result = findUserByName(name, job);
     result = { users_list: result };
@@ -105,7 +104,6 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  console.log(req)
   addUser(userToAdd);
   res.send();
 });
