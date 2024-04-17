@@ -95,25 +95,25 @@ app.delete("/users/:id", (req, res) => {
   if (!result){
     res.status(404).send("Resource not found.")
   } else{
-    res.send()
+    res.status(204).send()
   }
 })
 
 const addID = (user) => {
-  user.id = Math.floor(Math.random()*100000);
+  user.id = (Math.floor(Math.random()*100000)).toString();
   return user;
 }
 const addUser = (user) => {
-  users["users_list"].push(user);
+  users["users_list"].push(addID(user));
   return user;
 };
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   console.log(userToAdd)
-  addUser(addID(userToAdd));
-  console.log(userToAdd);
-  res.status(201).send(userToAdd);
+  const newUser = addUser(userToAdd);
+  console.log(newUser);
+  res.status(201).send(newUser);
 });
 
 app.listen(port, () => {
