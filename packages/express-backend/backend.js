@@ -99,6 +99,10 @@ app.delete("/users/:id", (req, res) => {
   }
 })
 
+const addID = (user) => {
+  user.id = Math.floor(Math.random()*100000);
+  return user;
+}
 const addUser = (user) => {
   users["users_list"].push(user);
   return user;
@@ -106,8 +110,10 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  console.log(userToAdd)
+  addUser(addID(userToAdd));
+  console.log(userToAdd);
+  res.status(201).send(userToAdd);
 });
 
 app.listen(port, () => {
