@@ -110,9 +110,7 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  console.log(userToAdd)
   const newUser = addUser(userToAdd);
-  console.log(newUser);
   res.status(201).send(newUser);
 });
 
