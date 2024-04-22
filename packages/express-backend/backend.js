@@ -1,6 +1,7 @@
 // backend.js
 import express from "express";
 import cors from "cors";
+import userServices from "./services/user-services.js";
 
 const app = express();
 const port = 8000;
@@ -58,13 +59,12 @@ const findUserByName = (name, job) => {
 app.get("/users", (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
-  if (name != undefined || job != undefined) {
-    let result = findUserByName(name, job);
+  let promise = userServices.getUsers(name, job);
+  promise.then((result) => {
     result = { users_list: result };
     res.send(result);
-  } else {
-    res.send(users);
-  }
+  } )
+    
 });
 
 const findUserById = (id) =>
@@ -72,12 +72,15 @@ const findUserById = (id) =>
 
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
-  let result = findUserById(id);
-  if (result === undefined) {
-    res.status(404).send("Resource not found.");
-  } else {
-    res.send(result);
-  }
+  let promise = userServices.findUserById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
 });
 
 const deleteUser = (id) => {
@@ -110,8 +113,11 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  const newUser = addUser(userToAdd);
-  res.status(201).send(newUser);
+  const promise = userServices.addUser(userToAdd);
+  promise.then((newUser) => {
+    res.status(201).send(newUser);
+  })
+  
 });
 
 app.listen(port, () => {
