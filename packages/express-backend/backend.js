@@ -94,12 +94,14 @@ const deleteUser = (id) => {
 };
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
-  let result = deleteUser(id)
-  if (!result){
-    res.status(404).send("Resource not found.")
-  } else{
-    res.status(204).send()
-  }
+  let promise = userServices.deleteUserById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
 })
 
 const addID = (user) => {
